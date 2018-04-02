@@ -12,8 +12,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import myapps.jherrera.sonidosapp.R;
-import myapps.jherrera.sonidosapp.Sonido;
 import myapps.jherrera.sonidosapp.interfaces.CallbackClick;
+import myapps.jherrera.sonidosapp.myutil.DownloadImageTask;
+import myapps.jherrera.sonidosapp.objects.Sonido;
 
 public class SonidoAdapter extends RecyclerView.Adapter<SonidoAdapter.SonidoViewHolder> {
 
@@ -32,7 +33,7 @@ public class SonidoAdapter extends RecyclerView.Adapter<SonidoAdapter.SonidoView
             v.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View view) {
 
-                    mListener.onClick(items.get(getAdapterPosition()).getNombre());
+                    mListener.onClickPlay(items.get(getAdapterPosition()).getAudioPath());
                 }
             });
         }
@@ -58,10 +59,12 @@ public class SonidoAdapter extends RecyclerView.Adapter<SonidoAdapter.SonidoView
     @Override
     public void onBindViewHolder(SonidoViewHolder viewHolder, int i) {
 
-        //Configurar la vista de la imagen aaqui abajo
-        //viewHolder.imagen.setImageResource(items.get(i).getIconoPath());
-
+       setImageViewFromUrl(viewHolder.imagen, items.get(i).getIconoPath());
         viewHolder.nombre.setText(items.get(i).getNombre());
 
+    }
+
+    private void setImageViewFromUrl(ImageView imageView, String url){
+        new DownloadImageTask(imageView).execute(url);
     }
 }
